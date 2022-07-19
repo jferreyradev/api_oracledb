@@ -35,7 +35,7 @@ module.exports.jsonEntity = {
             Id: 'IDTIPOLIQUIDACION',
             Descripcion: 'DESCRIPCION'
         },
-        key: { field: "Id", insert: true }
+        key: { field: "Id", insert: true, del: true }
     },
     tipoos: {
         table: 'TABTIPOOS',

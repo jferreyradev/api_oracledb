@@ -250,7 +250,7 @@ async function remove(entity, context) {
 
       if (binds[entity["key"].field]) {
           console.log(query);
-          let result = await database.simpleExecute(query, binds);
+          let result = await db.simpleExecute(query, binds);
           let json = { 'result': result, 'status': 200, rows: [] };
           return json;
       } else {
@@ -279,7 +279,7 @@ async function modify(entity, context) {
   }
 
   if (binds[entity["key"].field]) {
-      let result = await database.simpleExecute(query, binds);
+      let result = await db.simpleExecute(query, binds);
       let json = { 'result': result, 'status': 200, rows: [] };
       return json;
   } else {
