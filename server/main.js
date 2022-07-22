@@ -30,36 +30,19 @@ function initialize() {
 
             if (entities.jsonEntity[entityName]) {
                 let result = await cb(entities.jsonEntity[entityName], context);
-
-                console.log(entities.jsonEntity[entityName], context)
-           
-                if (result.rows.length > 0) {
-                    return result.rows
-                } 
-                
-                return -1
-
+                return result                
             } 
+            return null
         }
 
         router.get('/:entity', async function (req, res, next) {
             try {
-                let result 
-                                              
-                //console.log(req.params.entity)
-                //console.log(req.query)
+                let result = await getResult(req.params.entity, q.find, req.query)
 
-                
-                if (entities.jsonEntity[req.params.entity]) {
-                    result = await q.find(entities.jsonEntity[req.params.entity], req.query);
-
-                    console.log( entities.jsonEntity[req.params.entity], req.query)
-               
-                    if (result.rows.length > 0) {
-                        res.status(200).json(result.rows)
-                    } else {
-                        res.status(404).end()
-                    } 
+                if (result && result.rows.length > 0) {
+                    res.status(200).json(result.rows)
+                } else {
+                    res.status(404).end()
                 }
                 
             } catch (err) {
@@ -71,21 +54,14 @@ function initialize() {
 
         router.post('/:entity', async function (req, res, next) {
             try {
-                let result;
-                                              
-                console.log(req.params.entity)
-                console.log(req.body)
-        
-                if (entities.jsonEntity[req.params.entity]) {
-                    result = await q.create(entities.jsonEntity[req.params.entity], req.body);                    
-               
-                    if (result.rows.length > 0) {
-                        res.status(200).json(result.rows)
-                    } else {
-                        res.status(404).end()
-                    } 
-                }           
-        
+                let result = await getResult(req.params.entity, q.create, req.body)
+
+                if (result && result.rows.length > 0) {
+                    res.status(200).json(result.rows)
+                } else {
+                    res.status(404).end()
+                }
+
             } catch (err) {
                 next(err);
             }
@@ -95,18 +71,14 @@ function initialize() {
 
         router.put('/:entity', async function (req, res, next) {
             try {
-                let result;        
+                let result = await getResult(req.params.entity, q.modify, req.body)
 
-                if (entities.jsonEntity[req.params.entity]) {
-                    result = await q.modify(entities.jsonEntity[req.params.entity], req.body);
-               
-                    if (result.rows.length > 0) {
-                        res.status(200).json(result.rows)
-                    } else {
-                        res.status(404).end()
-                    }
+                if (result && result.rows.length > 0) {
+                    res.status(200).json(result.rows)
+                } else {
+                    res.status(404).end()
                 }
-        
+
             } catch (err) {
                 next(err);
             }
@@ -116,21 +88,13 @@ function initialize() {
 
         router.delete('/:entity', async function (req, res, next) {
             try {
-                let result;        
-                                              
-                console.log(req.params.entity)
-                console.log(req.query)
-        
-                if (entities.jsonEntity[req.params.entity]) {
-                    result = await q.remove(entities.jsonEntity[req.params.entity], req.body);
-                    console.log( entities.jsonEntity[req.params.entity], req.body)
-               
-                    if (result.rows.length > 0) {
-                        res.status(200).json(result.rows)
-                    } else {
-                        res.status(404).end()
-                    }
-                }
+                let result = await getResult(req.params.entity, q.remove, req.body)
+
+                if (result && result.rows.length > 0) {
+                    res.status(200).json(result.rows)
+                } else {
+                    res.status(404).end()
+                }  
         
             } catch (err) {
                 next(err);

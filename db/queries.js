@@ -190,7 +190,7 @@ async function find(entity, params) {
 
   let fullQuery = query + queryWhere.where
 
-  console.log(fullQuery)
+  //console.log(fullQuery)
 
   const result = await db.simpleExecute(fullQuery, queryWhere.binds);
 
