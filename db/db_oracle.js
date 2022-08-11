@@ -10,7 +10,7 @@ function setDriver() {
     if (process.platform === 'win32') { // Windows
         oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_21_6' });
     } else if (process.platform === 'darwin') { // macOS
-        oracledb.initOracleClient({ libDir: process.env.HOME + '/Downloads/instantclient_19_8' });
+        oracledb.initOracleClient({ libDir: process.env.HOME + '/bin/instantclient_21_3' });
     }
 }
 

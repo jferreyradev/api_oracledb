@@ -1,8 +1,8 @@
 module.exports = {
     oraPool: {
-      user: 'WORKFLOW',
-      password: 'workflow',
-      connectString: '10.6.46.15:1521/HPROD04',
+      user: 'docum',
+      password: 'docum',
+      connectString: 'www.serverburru2.duckdns.org/ORCL',
       poolMin: 10,
       poolMax: 10,
       poolIncrement: 0
