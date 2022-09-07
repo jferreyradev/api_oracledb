@@ -107,6 +107,8 @@ function getWhere(entity, context) {
 
 }
 
+module.exports.getWhere = getWhere
+
 function getSQLinsert(entity, context) {
   let sqlCab = 'INSERT INTO ' + entity.table;
   let strValues = '';

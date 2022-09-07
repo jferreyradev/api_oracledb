@@ -1,22 +1,23 @@
 const oracledb = require('oracledb');
-const dbConf = require('../config/db_conf');
+const oraPool = require('../config/db').oraPool;
 
 const defaultThreadPoolSize = 4;
 
-process.env.UV_THREADPOOL_SIZE = dbConf.oraPool.poolMax + defaultThreadPoolSize;
-
+process.env.UV_THREADPOOL_SIZE = oraPool.poolMax + defaultThreadPoolSize;
 
 function setDriver() {
+
     if (process.platform === 'win32') { // Windows
         oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_21_6' });
     } else if (process.platform === 'darwin') { // macOS
         oracledb.initOracleClient({ libDir: process.env.HOME + '/bin/instantclient_21_3' });
     }
+    
 }
 
 async function initialize() {
     setDriver();    
-    await oracledb.createPool(dbConf.oraPool);
+    await oracledb.createPool(oraPool);
 }
 
 module.exports.initialize = initialize;
@@ -72,7 +73,7 @@ async function checkConn() {
     let conn = null
     try {
         setDriver();
-        conn = await oracledb.getConnection(dbConf.oraPool);
+        conn = await oracledb.getConnection(oraPool);
         console.log('connected to database');
     } catch (err) {
         console.error(err.message);
@@ -94,7 +95,7 @@ module.exports.checkConn = checkConn;
 async function getConn() {
     let conn = null
     try {
-        conn = await oracledb.getConnection(dbConf.oraPool);
+        conn = await oracledb.getConnection(oraPool);
     } catch (err) {
         console.error(err.message);
     }

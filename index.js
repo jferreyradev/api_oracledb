@@ -1,3 +1,10 @@
+/* ******************** */
+// Se puede ejecutar especificando el puerto:
+//
+// PORT=3001 node index.js
+//
+/* ******************** */
+
 const db = require('./db/db_oracle')
 const webServer = require('./server/main')
 
