@@ -6,9 +6,11 @@ const q = require('../db/queries')
 const qv = require('../db/views')
 
 const entities = require('../config/entities');
-const views = require('../config/views').views ;
+const queries = require('../config/queries').queries;
+const views = require('../config/views').views;
 
 const bodyParser = require('body-parser');
+const { query } = require('express');
 
 const PORT = process.env.PORT || 3000;
 
@@ -40,12 +42,7 @@ function initialize() {
 
         async function getViewResult(viewName, cb, context) {
 
-            console.log('RESULT view')
-
-            console.log(views[viewName])
-
-            if (views[viewName]) {
-                console.log('Consulta')
+            if (views[viewName]) {                
                 let result = await cb(views[viewName], context);
                 return result
             }
@@ -124,14 +121,33 @@ function initialize() {
         router.get('/view/:view', async function (req, res, next) {
             try {
 
-                console.log(req.params.view)
-                console.log(req.query)
-
                 let result = await getViewResult(req.params.view, qv.getView, req.query)
 
                 if (result && result.rows.length > 0) {
                     res.status(200).json(result.rows)
                 } else {
+                    res.status(404).end()
+                }
+
+            } catch (err) {
+                next(err);
+            }
+
+            next();
+
+        });
+
+        router.get('/query/:query', async function (req, res, next) {
+            try {
+                let result = undefined
+                /*console.log(req.params.query)
+                console.log(req.query)*/
+                if (queries[req.params.query]) {                    
+
+                    result = await q.getQuery(queries[req.params.query].sql, req.query)
+                    if (result && result.rows.length > 0) {
+                        res.status(200).json(result.rows)
+                    }
                     res.status(404).end()
                 }
 
